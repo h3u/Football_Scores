@@ -58,7 +58,7 @@ public class Utilities {
 
     public static int getTeamCrestByTeamName (String teamname) {
         if (teamname==null){
-            return R.drawable.no_icon;
+            return R.drawable.football;
         }
         switch (teamname) {
             //This is the set of icons that are currently in the app. Feel free to find and add more
@@ -73,7 +73,7 @@ public class Utilities {
             case "West Bromwich Albion" : return R.drawable.west_bromwich_albion_hd_logo;
             case "Sunderland AFC" : return R.drawable.sunderland;
             case "Stoke City FC" : return R.drawable.stoke_city;
-            default: return R.drawable.no_icon;
+            default: return R.drawable.football;
         }
     }
 }
