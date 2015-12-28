@@ -152,6 +152,7 @@ public class myFetchService extends IntentService
 
         final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/";
         final String MATCH_LINK = "http://api.football-data.org/alpha/fixtures/";
+        final String TEAM_LINK = "http://api.football-data.org/alpha/teams/";
         final String FIXTURES = "fixtures";
         final String LINKS = "_links";
         final String SOCCER_SEASON = "soccerseason";
@@ -159,9 +160,12 @@ public class myFetchService extends IntentService
         final String MATCH_DATE = "date";
         final String HOME_TEAM = "homeTeamName";
         final String AWAY_TEAM = "awayTeamName";
+        final String HOME_TEAM_LINK = "homeTeam";
+        final String AWAY_TEAM_LINK = "awayTeam";
         final String RESULT = "result";
         final String HOME_GOALS = "goalsHomeTeam";
         final String AWAY_GOALS = "goalsAwayTeam";
+        final String STATUS = "status";
         final String MATCH_DAY = "matchday";
 
         //Match data
@@ -169,10 +173,13 @@ public class myFetchService extends IntentService
         String mDate = null;
         String mTime = null;
         String Home = null;
+        String home_team_id = null;
         String Away = null;
+        String away_team_id = null;
         String Home_goals = null;
         String Away_goals = null;
         String match_id = null;
+        String status = null;
         String match_day = null;
 
 
@@ -193,7 +200,7 @@ public class myFetchService extends IntentService
                 //add leagues here in order to have them be added to the DB.
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
-                if(     League.equals(PREMIER_LEAGUE)      ||
+                if (    League.equals(PREMIER_LEAGUE)      ||
                         League.equals(SERIE_A)             ||
                         League.equals(BUNDESLIGA1)         ||
                         League.equals(BUNDESLIGA2)         ||
@@ -202,7 +209,14 @@ public class myFetchService extends IntentService
                     match_id = match_data.getJSONObject(LINKS).getJSONObject(SELF).
                             getString("href");
                     match_id = match_id.replace(MATCH_LINK, "");
-                    if(!isReal){
+                    home_team_id = match_data.getJSONObject(LINKS).getJSONObject(HOME_TEAM_LINK).
+                            getString("href");
+                    home_team_id = home_team_id.replace(TEAM_LINK, "");
+                    away_team_id = match_data.getJSONObject(LINKS).getJSONObject(AWAY_TEAM_LINK).
+                            getString("href");
+                    away_team_id = away_team_id.replace(TEAM_LINK, "");
+
+                    if (!isReal){
                         //This if statement changes the match ID of the dummy data so that it all goes into the database
                         match_id=match_id+Integer.toString(i);
                     }
@@ -236,7 +250,9 @@ public class myFetchService extends IntentService
                     Away = match_data.getString(AWAY_TEAM);
                     Home_goals = match_data.getJSONObject(RESULT).getString(HOME_GOALS);
                     Away_goals = match_data.getJSONObject(RESULT).getString(AWAY_GOALS);
+                    status = match_data.getString(STATUS);
                     match_day = match_data.getString(MATCH_DAY);
+
                     ContentValues match_values = new ContentValues();
                     match_values.put(DatabaseContract.scores_table.MATCH_ID,match_id);
                     match_values.put(DatabaseContract.scores_table.DATE_COL,mDate);
@@ -246,27 +262,27 @@ public class myFetchService extends IntentService
                     match_values.put(DatabaseContract.scores_table.HOME_GOALS_COL,Home_goals);
                     match_values.put(DatabaseContract.scores_table.AWAY_GOALS_COL,Away_goals);
                     match_values.put(DatabaseContract.scores_table.LEAGUE_COL,League);
+                    match_values.put(DatabaseContract.scores_table.HOME_ID, home_team_id);
+                    match_values.put(DatabaseContract.scores_table.AWAY_ID, away_team_id);
+                    match_values.put(DatabaseContract.scores_table.STATUS, status);
                     match_values.put(DatabaseContract.scores_table.MATCH_DAY,match_day);
                     //log spam
-
-                    //Log.v(LOG_TAG,match_id);
-                    //Log.v(LOG_TAG,mDate);
-                    //Log.v(LOG_TAG,mTime);
-                    //Log.v(LOG_TAG,Home);
-                    //Log.v(LOG_TAG,Away);
-                    //Log.v(LOG_TAG,Home_goals);
-                    //Log.v(LOG_TAG,Away_goals);
-
+//                    Log.d(LOG_TAG, String
+//                            .format("processJSONdata - values: match_id: %s, date: %s, time: %s, home(%s): %s, away(%s): %s, goals: %s-%s, status: %s",
+//                                    match_id, mDate, mTime, home_team_id, Home, away_team_id, Away, Home_goals, Away_goals, status));
                     values.add(match_values);
                 }
             }
+
+            // delete old data
+            int deleted = 0;
+            deleted = mContext.getContentResolver().delete(DatabaseContract.BASE_CONTENT_URI, null, null);
             int inserted_data = 0;
             ContentValues[] insert_data = new ContentValues[values.size()];
             values.toArray(insert_data);
             inserted_data = mContext.getContentResolver().bulkInsert(
                     DatabaseContract.BASE_CONTENT_URI,insert_data);
 
-            //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
         }
         catch (JSONException e)
         {
@@ -275,4 +291,3 @@ public class myFetchService extends IntentService
 
     }
 }
-

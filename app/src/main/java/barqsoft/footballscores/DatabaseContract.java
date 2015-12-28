@@ -21,6 +21,9 @@ public class DatabaseContract
         public static final String HOME_GOALS_COL = "home_goals";
         public static final String AWAY_GOALS_COL = "away_goals";
         public static final String MATCH_ID = "match_id";
+        public static final String HOME_ID = "home_team_id";
+        public static final String AWAY_ID = "away_team_id";
+        public static final String STATUS = "status";
         public static final String MATCH_DAY = "match_day";
 
         //public static Uri SCORES_CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH)
