@@ -2,9 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="barqsoft.footballscores" >
 
-    <uses-permission
-        android:name="android.permission.INTERNET"
-        android:maxSdkVersion="22" />
+    <!-- This permission is a must have, could be enhanced later with a dynamic request
+    for marshmallow devices -->
+    <!--<uses-permission-->
+        <!--android:name="android.permission.INTERNET"-->
+        <!--android:maxSdkVersion="22" />-->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
