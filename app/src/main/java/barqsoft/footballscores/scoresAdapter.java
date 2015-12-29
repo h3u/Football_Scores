@@ -15,15 +15,15 @@ import android.widget.TextView;
  */
 public class scoresAdapter extends CursorAdapter
 {
+    public static final int COL_ID = 1;
+    public static final int COL_MATCHTIME = 2;
     public static final int COL_HOME = 3;
     public static final int COL_AWAY = 4;
-    public static final int COL_HOME_GOALS = 6;
-    public static final int COL_AWAY_GOALS = 7;
-    public static final int COL_DATE = 1;
-    public static final int COL_LEAGUE = 5;
-    public static final int COL_MATCHDAY = 9;
-    public static final int COL_ID = 8;
-    public static final int COL_MATCHTIME = 2;
+    public static final int COL_HOME_GOALS = 5;
+    public static final int COL_AWAY_GOALS = 6;
+    public static final int COL_LEAGUE = 7;
+    public static final int COL_MATCHDAY = 8;
+
     public double detail_match_id = 0;
     private String FOOTBALL_SCORES_HASHTAG = "#Football_Scores";
     public scoresAdapter(Context context,Cursor cursor,int flags)

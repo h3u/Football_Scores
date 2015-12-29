@@ -17,6 +17,18 @@ import android.widget.ListView;
  */
 public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
+    public static final String[] SCORES_COLUMNS = {
+            DatabaseContract.SCORES_TABLE + "." + DatabaseContract.scores_table._ID,
+            DatabaseContract.scores_table.MATCH_ID,
+            DatabaseContract.scores_table.TIME_COL,
+            DatabaseContract.scores_table.HOME_COL,
+            DatabaseContract.scores_table.AWAY_COL,
+            DatabaseContract.scores_table.HOME_GOALS_COL,
+            DatabaseContract.scores_table.AWAY_GOALS_COL,
+            DatabaseContract.scores_table.LEAGUE_COL,
+            DatabaseContract.scores_table.MATCH_DAY
+    };
+
     public scoresAdapter mAdapter;
     public static final int SCORES_LOADER = 0;
     private String[] fragmentdate = new String[1];
@@ -57,7 +69,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
         return new CursorLoader(getActivity(),DatabaseContract.scores_table.buildScoreWithDate(),
-                null,null,fragmentdate,null);
+                SCORES_COLUMNS, null, fragmentdate, null);
     }
 
     @Override
