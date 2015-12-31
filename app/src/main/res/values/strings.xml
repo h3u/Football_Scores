@@ -48,4 +48,10 @@
     <string name="league_403">3. Bundesliga</string>
     <string name="league_404">Eredivisie</string>
     <string name="league_not_found">League unknown</string>
+
+    <!-- widget -->
+    <string name="title_widget_today">Football Scores</string>
+    <string name="widget_today_no_data">No matches today.</string>
+
+
 </resources>

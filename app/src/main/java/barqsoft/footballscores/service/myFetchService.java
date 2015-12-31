@@ -273,9 +273,6 @@ public class myFetchService extends IntentService
                 }
             }
 
-            // delete old data
-            int deleted = 0;
-            deleted = mContext.getContentResolver().delete(DatabaseContract.BASE_CONTENT_URI, null, null);
             int inserted_data = 0;
             ContentValues[] insert_data = new ContentValues[values.size()];
             values.toArray(insert_data);
