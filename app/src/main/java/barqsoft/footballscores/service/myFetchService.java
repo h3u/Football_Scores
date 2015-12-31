@@ -40,10 +40,9 @@ public class myFetchService extends IntentService
     @Override
     protected void onHandleIntent(Intent intent)
     {
+        cleanupData();
         getData("n2");
         getData("p2");
-
-        return;
     }
 
     private void getData (String timeFrame)
@@ -288,6 +287,17 @@ public class myFetchService extends IntentService
         {
             Log.e(LOG_TAG,e.getMessage());
         }
+    }
 
+    /**
+     * Remove existing football scores
+     *
+     * @return int deleted records
+     */
+    private int cleanupData() {
+            int deleted = 0;
+            deleted = getApplicationContext().getContentResolver()
+                    .delete(DatabaseContract.BASE_CONTENT_URI, null, null);
+        return deleted;
     }
 }
