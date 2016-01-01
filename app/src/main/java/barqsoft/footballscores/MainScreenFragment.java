@@ -32,10 +32,16 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     public scoresAdapter mAdapter;
     public static final int SCORES_LOADER = 0;
     private String[] fragmentdate = new String[1];
-    private int last_selected_item = -1;
+    private long dateInMillis;
 
-    public MainScreenFragment()
+    public long getDateInMillis()
     {
+        return dateInMillis;
+    }
+
+    public void setDateInMillis(long dateInMillis)
+    {
+        this.dateInMillis = dateInMillis;
     }
 
     public void setFragmentDate(String date)
@@ -44,7 +50,8 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             final Bundle savedInstanceState) {
+                             final Bundle savedInstanceState)
+    {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final ListView score_list = (ListView) rootView.findViewById(R.id.scores_list);
         mAdapter = new scoresAdapter(getActivity(),null,0);
@@ -102,6 +109,4 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     {
         mAdapter.swapCursor(null);
     }
-
-
 }

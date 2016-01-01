@@ -1,6 +1,7 @@
 package barqsoft.footballscores;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 /**
@@ -75,5 +76,9 @@ public class Utilities {
             case "Stoke City FC" : return R.drawable.stoke_city;
             default: return R.drawable.football;
         }
+    }
+
+    public static boolean hasJellyBeanMr1() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 }
