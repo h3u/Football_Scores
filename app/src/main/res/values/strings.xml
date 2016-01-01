@@ -53,5 +53,8 @@
     <string name="title_widget_today">Football Scores</string>
     <string name="widget_today_no_data">No matches today.</string>
 
-
+     <!--Content descriptions -->
+    <string name="score_card_description_scoreless">Match %1$s versus %2$s without a score yet.</string>
+    <string name="score_card_description_scored">Match %1$s versus %2$s has score %3$s - %4$s.</string>
+    <string name="detail_share_button_description">Share this Score</string>
 </resources>

@@ -9,6 +9,7 @@
     <LinearLayout
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/score_list_item"
         android:paddingTop="5dp">
 
         <LinearLayout

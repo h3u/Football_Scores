@@ -17,8 +17,8 @@ Please add following line:
 ### Must have
 
 - _add API key to the app_ √
-- Football Scores can be displayed in a widget.
-- Football Scores app has content descriptions for all buttons
+- Football Scores can be displayed in a widget. √
+- Football Scores app has content descriptions for all buttons √
 - Football Scores app supports layout mirroring (right-to-left support)
 
 ### Nice to have

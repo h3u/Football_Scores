@@ -15,6 +15,8 @@ import android.widget.TextView;
  */
 public class scoresAdapter extends CursorAdapter
 {
+    private static final String LOG_TAG = "scoresAdapter";
+
     public static final int COL_ID = 1;
     public static final int COL_MATCHTIME = 2;
     public static final int COL_HOME = 3;
@@ -24,7 +26,7 @@ public class scoresAdapter extends CursorAdapter
     public static final int COL_LEAGUE = 7;
     public static final int COL_MATCHDAY = 8;
 
-    public double detail_match_id = 0;
+    public int detail_match_id = 0;
     private String FOOTBALL_SCORES_HASHTAG = "#Football_Scores";
     public scoresAdapter(Context context,Cursor cursor,int flags)
     {
@@ -49,31 +51,52 @@ public class scoresAdapter extends CursorAdapter
         mHolder.away_name.setText(cursor.getString(COL_AWAY));
         mHolder.date.setText(cursor.getString(COL_MATCHTIME));
         mHolder.score.setText(Utilities.getScores(cursor.getInt(COL_HOME_GOALS),cursor.getInt(COL_AWAY_GOALS)));
-        mHolder.match_id = cursor.getDouble(COL_ID);
+        mHolder.match_id = cursor.getInt(COL_ID);
         mHolder.home_crest.setImageResource(Utilities.getTeamCrestByTeamName(
                 cursor.getString(COL_HOME)));
         mHolder.away_crest.setImageResource(Utilities.getTeamCrestByTeamName(
                 cursor.getString(COL_AWAY)
         ));
+        if ("-1".equals(cursor.getString(scoresAdapter.COL_HOME_GOALS))
+                || "-1".equals(cursor.getString(scoresAdapter.COL_AWAY_GOALS))) {
+
+            mHolder.scores_list_item.setContentDescription(
+                    context.getString(R.string.score_card_description_scoreless,
+                            cursor.getString(scoresAdapter.COL_HOME),
+                            cursor.getString(scoresAdapter.COL_AWAY)));
+        } else {
+            mHolder.scores_list_item.setContentDescription(
+                    context.getString(R.string.score_card_description_scored,
+                            cursor.getString(scoresAdapter.COL_HOME),
+                            cursor.getString(scoresAdapter.COL_AWAY),
+                            cursor.getString(scoresAdapter.COL_HOME_GOALS),
+                            cursor.getString(scoresAdapter.COL_AWAY_GOALS)));
+        }
         //Log.v(FetchScoreTask.LOG_TAG,mHolder.home_name.getText() + " Vs. " + mHolder.away_name.getText() +" id " + String.valueOf(mHolder.match_id));
         //Log.v(FetchScoreTask.LOG_TAG,String.valueOf(detail_match_id));
         LayoutInflater vi = (LayoutInflater) context.getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.detail_fragment, null);
         ViewGroup container = (ViewGroup) view.findViewById(R.id.details_fragment_container);
-        if(mHolder.match_id == detail_match_id)
+        if (mHolder.match_id == detail_match_id)
         {
-            //Log.v(FetchScoreTask.LOG_TAG,"will insert extraView");
-
+            // remove child views in case of multiple tapping of detail score
+            container.removeAllViews();
             container.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                     , ViewGroup.LayoutParams.MATCH_PARENT));
             TextView match_day = (TextView) v.findViewById(R.id.matchday_textview);
-            match_day.setText(Utilities.getMatchDay(cursor.getInt(COL_MATCHDAY),
-                    cursor.getInt(COL_LEAGUE)));
+            String matchDayText = Utilities.getMatchDay(cursor.getInt(COL_MATCHDAY), cursor.getInt(COL_LEAGUE));
+            match_day.setText(matchDayText);
+            match_day.setContentDescription(matchDayText);
+
             TextView league = (TextView) v.findViewById(R.id.league_textview);
-            league.setText(Utilities.getLeague(context, cursor.getInt(COL_LEAGUE)));
+            String leagueText = Utilities.getLeague(context, cursor.getInt(COL_LEAGUE));
+            league.setText(leagueText);
+            league.setContentDescription(leagueText);
+
             Button share_button = (Button) v.findViewById(R.id.share_button);
-            share_button.setOnClickListener(new View.OnClickListener() {
+            share_button.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
                 public void onClick(View v)
                 {
@@ -96,5 +119,4 @@ public class scoresAdapter extends CursorAdapter
         shareIntent.putExtra(Intent.EXTRA_TEXT, ShareText + FOOTBALL_SCORES_HASHTAG);
         return shareIntent;
     }
-
 }
