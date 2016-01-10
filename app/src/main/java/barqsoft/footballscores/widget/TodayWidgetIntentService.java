@@ -111,7 +111,7 @@ public class TodayWidgetIntentService extends IntentService {
                 }
                 // Content Descriptions for RemoteViews were only added in ICS MR1
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                    setRemoteContentDescription(views, homeTeam, awayTeam);
+                    setRemoteContentDescription(views, homeTeam, awayTeam, homeGoals, awayGoals);
                 }
                 views.setTextViewText(R.id.widget_today_home_name, homeTeam);
                 views.setTextViewText(R.id.widget_today_away_name, awayTeam);
@@ -147,9 +147,12 @@ public class TodayWidgetIntentService extends IntentService {
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-    private void setRemoteContentDescription(RemoteViews views, String homeTeamName, String awayTeamName) {
-        views.setContentDescription(R.id.widget_today_home_crest, homeTeamName);
-        views.setContentDescription(R.id.widget_today_away_crest, awayTeamName);
+    private void setRemoteContentDescription(RemoteViews views, String homeTeamName,
+                                             String awayTeamName, String homeGoals, String awayGoals) {
+
+        views.setContentDescription(R.id.widget_today_layout,
+                getString(R.string.score_card_description_scored,
+                        homeTeamName, awayTeamName, homeGoals, awayGoals));
     }
 
     private int getWidgetWidth(AppWidgetManager appWidgetManager, int appWidgetId) {
